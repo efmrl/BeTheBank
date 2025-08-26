@@ -1,0 +1,9 @@
+# Public directory
+public/
+
+# Vim temporary files
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
