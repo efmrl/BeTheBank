@@ -1,3 +1,3 @@
-use TailwindCSS for styling
+Use TailwindCSS for styling.
 
-use alpinejs for interactivity
+Use alpinejs for interactivity.
