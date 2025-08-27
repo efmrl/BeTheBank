@@ -1,0 +1,34 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Table legs (truncated at bottom) -->
+  <rect x="6" y="22" width="2" height="10" fill="#654321" rx="0.3"/>
+  <rect x="8" y="22" width="2" height="8" fill="#654321" rx="0.3"/>
+  <rect x="22" y="22" width="2" height="10" fill="#654321" rx="0.3"/>
+  <rect x="24" y="22" width="2" height="8" fill="#654321" rx="0.3"/>
+  
+  <!-- Restaurant table (oval) -->
+  <ellipse cx="16" cy="20" rx="12" ry="6" fill="#8B4513" stroke="#654321" stroke-width="0.5"/>
+  
+  <!-- Movement arrow for credit card (going out) -->
+  <path d="M16 6 L14 7.5 L16 9" stroke="#EF4444" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Credit card going out (tilted, moving away) -->
+  <rect x="18" y="6" width="8" height="5" rx="0.5" fill="#4F46E5" stroke="#3730A3" stroke-width="0.3" transform="rotate(15 22 8.5)"/>
+  <rect x="19" y="7.2" width="6" height="0.8" fill="#FFD700" transform="rotate(15 22 8.5)"/>
+  <circle cx="23.5" cy="9.5" r="0.4" fill="#E5E7EB" transform="rotate(15 22 8.5)"/>
+  
+  <!-- Table surface details (subtle wood grain lines) -->
+  <ellipse cx="16" cy="20" rx="10" ry="4" fill="none" stroke="#654321" stroke-width="0.2" opacity="0.5"/>
+  <ellipse cx="16" cy="20" rx="8" ry="3" fill="none" stroke="#654321" stroke-width="0.1" opacity="0.3"/>
+  
+  <!-- Cash bills coming in (multiple bills, slightly fanned) - top layer -->
+  <rect x="7" y="15" width="7" height="4" rx="0.3" fill="#22C55E" stroke="#16A34A" stroke-width="0.3" transform="rotate(-10 10.5 17)" opacity="1"/>
+  <rect x="6" y="14" width="7" height="4" rx="0.3" fill="#34D399" stroke="#16A34A" stroke-width="0.3" transform="rotate(-5 9.5 16)" opacity="1"/>
+  <rect x="5" y="13" width="7" height="4" rx="0.3" fill="#6EE7B7" stroke="#16A34A" stroke-width="0.3" opacity="1"/>
+  
+  <!-- Dollar signs on cash -->
+  <text x="8.5" y="15.5" font-family="Arial" font-size="2" fill="#047857" font-weight="bold" opacity="1">$</text>
+  <text x="7.5" y="16.5" font-family="Arial" font-size="2" fill="#047857" font-weight="bold" opacity="1">$</text>
+  
+  <!-- Movement arrow for cash (coming in) - top layer -->
+  <path d="M15 14 L17 15.5 L15 17" stroke="#22C55E" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+</svg>
