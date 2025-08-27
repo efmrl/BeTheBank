@@ -1,5 +1,3 @@
-# Be the Bank
-
 ## The Scenario
 
 You and your friends meet for a meal. You like to pay on one check,
