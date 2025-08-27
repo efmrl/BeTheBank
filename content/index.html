@@ -10,12 +10,13 @@
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen py-8">
     <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6" x-data="tipCalculator()">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white text-center flex-1">
+            <div class="w-12"></div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 Be the Bank
             </h1>
             <button 
                 @click="loadAbout()"
-                class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors w-12 text-right"
             >
                 About
             </button>
@@ -231,6 +232,7 @@
              x-transition:leave-end="opacity-0"
              class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
              @click.self="showAbout = false"
+             @keydown.escape.window="showAbout = false"
              style="display: none;">
             <div x-transition:enter="transition ease-out duration-300 delay-100"
                  x-transition:enter-start="opacity-0 scale-95 translate-y-4"
