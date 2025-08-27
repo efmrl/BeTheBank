@@ -30,14 +30,14 @@
                         :class="mode === 'normal' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
                         class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
                     >
-                        Normal Mode
+                        Set the Tip
                     </button>
                     <button 
                         @click="mode = 'reverse'"
                         :class="mode === 'reverse' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
                         class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
                     >
-                        Reverse Mode
+                        Set Your Amount
                     </button>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
@@ -184,7 +184,7 @@
                     <!-- Reverse Mode Results -->
                     <div x-show="mode === 'reverse'" class="space-y-2 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Required tip percentage:</span>
+                            <span class="text-gray-700 dark:text-gray-300">Resulting tip percentage:</span>
                             <span class="font-medium text-gray-900 dark:text-white"><span x-text="requiredTipPercentage"></span>%</span>
                         </div>
                         
@@ -212,10 +212,10 @@
 
                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded">
                     <div x-show="mode === 'normal'">
-                        <strong>Normal Mode:</strong> You charge the full bill + tip on your credit card, then collect cash from friends. This shows how much you actually pay out of pocket.
+                        <strong>Set the Tip:</strong> You charge the full bill + tip on your credit card, then collect cash from friends. This shows how much you actually pay out of pocket.
                     </div>
                     <div x-show="mode === 'reverse'">
-                        <strong>Reverse Mode:</strong> Enter how much you want to pay out of pocket, and get the tip percentage needed to achieve that goal. Perfect when you have a specific budget in mind.
+                        <strong>Set Your Amount:</strong> Enter how much you want to pay out of pocket, and get the tip percentage needed to achieve that goal. Perfect when you have a specific budget in mind.
                     </div>
                 </div>
             </div>
