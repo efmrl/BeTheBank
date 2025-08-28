@@ -3,6 +3,9 @@
 # Create public directory if it doesn't exist
 mkdir -p public
 
+# Build CSS from TailwindCSS
+npm run build-css-once
+
 # Copy content/index.html to public/index.html
 cp content/index.html public/index.html
 

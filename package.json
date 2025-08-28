@@ -1,0 +1,26 @@
+{
+  "name": "bethebank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "efmrl2.config.js",
+  "scripts": {
+    "build-css": "npx tailwindcss -i ./src/input.css -o ./public/styles.css --watch",
+    "build-css-once": "npx tailwindcss -i ./src/input.css -o ./public/styles.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samf/BeTheBank.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/samf/BeTheBank/issues"
+  },
+  "homepage": "https://github.com/samf/BeTheBank#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.1.12"
+  }
+}

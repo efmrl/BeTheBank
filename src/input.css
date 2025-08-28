@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+@source "../content/index.html";
+@source "../public/index.html";
