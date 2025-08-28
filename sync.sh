@@ -6,15 +6,15 @@ mkdir -p public
 # Build CSS from TailwindCSS
 npm run build-css-once
 
-# Copy content/index.html to public/index.html
-cp content/index.html public/index.html
+# Copy src/index.html to public/index.html
+cp src/index.html public/index.html
 
 # Copy favicon.svg to public directory
-cp content/favicon.svg public/favicon.svg
+cp src/favicon.svg public/favicon.svg
 
-# Convert content/about.md to public/about/index.html using pandoc
+# Convert src/about.md to public/about/index.html using pandoc
 mkdir -p public/about
-pandoc content/about.md -o public/about/index.html
+pandoc src/about.md -o public/about/index.html
 
 # Sync to cloud deployment
 efmrl sync -D
