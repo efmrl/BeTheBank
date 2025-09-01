@@ -1,386 +1,544 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be the Bank</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-gray-100 dark:bg-gray-900 min-h-screen py-8">
-    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6" x-data="tipCalculator()">
-        <div class="flex justify-between items-center mb-6">
-            <div class="w-12"></div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                Be the Bank
-            </h1>
-            <button 
-                @click="loadAbout()"
-                class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors w-12 text-right"
-            >
-                About
-            </button>
-        </div>
-        
-        <div>
-            <!-- Mode Toggle -->
-            <div class="mb-6">
-                <div class="flex bg-gray-200 dark:bg-gray-700 rounded-lg p-1">
-                    <button 
-                        @click="mode = 'normal'"
-                        :class="mode === 'normal' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
-                        class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
-                    >
-                        Set the Tip
-                    </button>
-                    <button 
-                        @click="mode = 'reverse'"
-                        :class="mode === 'reverse' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
-                        class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
-                    >
-                        Set Your Amount
-                    </button>
-                </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                    <span x-show="mode === 'normal'">Enter bill and tip % → Get amounts</span>
-                    <span x-show="mode === 'reverse'">Enter desired payment → Get tip %</span>
-                </p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Be the Bank</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="stylesheet" href="styles.css" />
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body class="bg-gray-100 dark:bg-gray-900 min-h-screen py-8">
+        <div
+            class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+            x-data="tipCalculator()"
+        >
+            <div class="flex justify-between items-center mb-6">
+                <div class="w-12"></div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Be the Bank
+                </h1>
+                <button
+                    @click="loadAbout()"
+                    class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors w-12 text-right"
+                >
+                    About
+                </button>
             </div>
 
-            <div class="space-y-4">
-                <!-- Normal Mode Inputs -->
-                <div x-show="mode === 'normal'">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Total Bill Amount
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                <input 
-                                    type="number" 
-                                    x-model="billAmount"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                    class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Cash Collected from Friends
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                <input 
-                                    type="number" 
-                                    x-model="cashCollected"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                    class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Tip Percentage
-                            </label>
-                            <div class="relative">
-                                <input 
-                                    type="number" 
-                                    x-model="tipPercentage"
-                                    step="1"
-                                    placeholder="20"
-                                    min="0"
-                                    max="50"
-                                    class="w-full pr-8 pl-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reverse Mode Inputs -->
-                <div x-show="mode === 'reverse'">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Total Bill Amount
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                <input 
-                                    type="number" 
-                                    x-model="billAmount"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                    class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Cash Collected from Friends
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                <input 
-                                    type="number" 
-                                    x-model="cashCollected"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                    class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Amount You Will Pay
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                <input 
-                                    type="number" 
-                                    x-model="desiredPayment"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                    class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg mt-6">
-                    <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">Results</h2>
-                    
-                    <!-- Normal Mode Results -->
-                    <div x-show="mode === 'normal'" class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Total bill amount:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="formatCurrency(billAmount)"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Tip amount:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="tipAmount"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Bill + tip (total charge):</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="totalWithTip"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Cash collected from friends:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="formatCurrency(cashCollected)"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between pt-2 border-t border-blue-200 dark:border-blue-700">
-                            <span class="font-semibold text-blue-900 dark:text-blue-100">You actually pay:</span>
-                            <span class="font-bold text-lg text-blue-900 dark:text-blue-100">$<span x-text="yourActualCost"></span></span>
-                        </div>
-                    </div>
-
-                    <!-- Reverse Mode Results -->
-                    <div x-show="mode === 'reverse'" class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Total bill amount:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="formatCurrency(billAmount)"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Tip amount:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="requiredTipAmount"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Bill + tip (total charge):</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="grandTotal"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between">
-                            <span class="text-gray-700 dark:text-gray-300">Cash collected from friends:</span>
-                            <span class="font-medium text-gray-900 dark:text-white">$<span x-text="formatCurrency(cashCollected)"></span></span>
-                        </div>
-                        
-                        <div class="flex justify-between pt-2 border-t border-blue-200 dark:border-blue-700">
-                            <span class="font-semibold text-blue-900 dark:text-blue-100">Resulting tip percentage:</span>
-                            <span class="font-bold text-lg text-blue-900 dark:text-blue-100"><span x-text="requiredTipPercentage"></span>%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-xs text-gray-500 dark:text-gray-400 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                    <div x-show="mode === 'normal'">
-                        <strong>Set the Tip:</strong> You charge the full bill + tip on your credit card, then collect cash from friends. This shows how much you actually pay out of pocket.
-                    </div>
-                    <div x-show="mode === 'reverse'">
-                        <strong>Set Your Amount:</strong> Enter how much you want to pay out of pocket, and get the tip percentage needed to achieve that goal. Perfect when you have a specific budget in mind.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- About Modal -->
-        <div x-show="showAbout" 
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-             @click.self="showAbout = false"
-             @keydown.escape.window="showAbout = false"
-             style="display: none;">
-            <div x-transition:enter="transition ease-out duration-300 delay-100"
-                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl ring-1 ring-gray-900/10 dark:ring-gray-100/10 max-w-2xl w-full max-h-[85vh] overflow-hidden">
-                
-                <!-- Modal Header -->
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">About "Be the Bank"</h2>
-                        </div>
-                        <button 
-                            @click="showAbout = false"
-                            class="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all duration-200"
-                            aria-label="Close modal"
+            <div>
+                <!-- Mode Toggle -->
+                <div class="mb-6">
+                    <div
+                        class="flex bg-gray-200 dark:bg-gray-700 rounded-lg p-1"
+                    >
+                        <button
+                            @click="mode = 'normal'"
+                            :class="mode === 'normal' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
+                            class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
                         >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            Set the Tip
+                        </button>
+                        <button
+                            @click="mode = 'reverse'"
+                            :class="mode === 'reverse' ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-700 dark:text-gray-300'"
+                            class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
+                        >
+                            Set Your Amount
                         </button>
                     </div>
+                    <p
+                        class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center"
+                    >
+                        <span x-show="mode === 'normal'"
+                            >Enter bill and tip % → Get amounts</span
+                        >
+                        <span x-show="mode === 'reverse'"
+                            >Enter desired payment → Get tip %</span
+                        >
+                    </p>
                 </div>
-                
-                <!-- Modal Content -->
-                <div class="px-6 py-6 max-h-[calc(85vh-5rem)] overflow-y-auto">
-                    <div class="about-content 
-                               [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-gray-900 [&_h1]:dark:text-white [&_h1]:mb-6 [&_h1]:border-b-2 [&_h1]:border-blue-200 [&_h1]:dark:border-blue-700 [&_h1]:pb-3
-                               [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-blue-900 [&_h2]:dark:text-blue-100 [&_h2]:mb-5 [&_h2]:mt-8 [&_h2]:border-b [&_h2]:border-blue-200 [&_h2]:dark:border-blue-800 [&_h2]:pb-2
-                               [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-blue-800 [&_h3]:dark:text-blue-200 [&_h3]:mb-4 [&_h3]:mt-6
-                               [&_h4]:text-lg [&_h4]:font-medium [&_h4]:text-blue-700 [&_h4]:dark:text-blue-300 [&_h4]:mb-3 [&_h4]:mt-4
-                               [&_p]:text-gray-700 [&_p]:dark:text-gray-300 [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-base
-                               [&_p:first-of-type]:text-lg [&_p:first-of-type]:font-medium [&_p:first-of-type]:text-gray-600 [&_p:first-of-type]:dark:text-gray-400
-                               [&_strong]:font-semibold [&_strong]:text-gray-900 [&_strong]:dark:text-white
-                               [&_b]:font-semibold [&_b]:text-gray-900 [&_b]:dark:text-white
-                               [&_em]:italic [&_em]:text-blue-600 [&_em]:dark:text-blue-400 [&_em]:font-medium
-                               [&_i]:italic [&_i]:text-blue-600 [&_i]:dark:text-blue-400 [&_i]:font-medium
-                               [&_ul]:text-gray-700 [&_ul]:dark:text-gray-300 [&_ul]:mb-4 [&_ul]:ml-6
-                               [&_ol]:text-gray-700 [&_ol]:dark:text-gray-300 [&_ol]:mb-4 [&_ol]:ml-6
-                               [&_li]:mb-2
-                               [&_a]:text-blue-600 [&_a]:dark:text-blue-400 [&_a]:no-underline [&_a:hover]:underline
-                               [&_blockquote]:border-l-4 [&_blockquote]:border-blue-200 [&_blockquote]:dark:border-blue-700 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:dark:text-gray-400 [&_blockquote]:my-4
-                               [&_code]:bg-gray-100 [&_code]:dark:bg-gray-700 [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono [&_code]:text-gray-800 [&_code]:dark:text-gray-200
-                               " 
-                         x-html="aboutContent">
-                        <div class="flex items-center justify-center py-12">
-                            <div class="text-center">
-                                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
-                                <p class="text-gray-600 dark:text-gray-400 font-medium">Loading content...</p>
+
+                <div class="space-y-4">
+                    <!-- Normal Mode Inputs -->
+                    <div x-show="mode === 'normal'">
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Total Bill Amount
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >$</span
+                                    >
+                                    <input
+                                        type="number"
+                                        x-model="billAmount"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Cash Collected from Friends
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >$</span
+                                    >
+                                    <input
+                                        type="number"
+                                        x-model="cashCollected"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Tip Percentage
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="number"
+                                        x-model="tipPercentage"
+                                        step="1"
+                                        placeholder="20"
+                                        min="0"
+                                        max="50"
+                                        class="w-full pr-8 pl-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                    <span
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >%</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reverse Mode Inputs -->
+                    <div x-show="mode === 'reverse'">
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Total Bill Amount
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >$</span
+                                    >
+                                    <input
+                                        type="number"
+                                        x-model="billAmount"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Cash Collected from Friends
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >$</span
+                                    >
+                                    <input
+                                        type="number"
+                                        x-model="cashCollected"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Amount You Will Pay
+                                </label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        >$</span
+                                    >
+                                    <input
+                                        type="number"
+                                        x-model="desiredPayment"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg mt-6"
+                    >
+                        <h2
+                            class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3"
+                        >
+                            Results
+                        </h2>
+
+                        <!-- Normal Mode Results -->
+                        <div
+                            x-show="mode === 'normal'"
+                            class="space-y-2 text-sm"
+                        >
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Total bill amount:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span
+                                        x-text="formatCurrency(billAmount)"
+                                    ></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Tip amount:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span x-text="tipAmount"></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Bill + tip (total charge):</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span x-text="totalWithTip"></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Cash collected from friends:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span
+                                        x-text="formatCurrency(cashCollected)"
+                                    ></span
+                                ></span>
+                            </div>
+
+                            <div
+                                class="flex justify-between pt-2 border-t border-blue-200 dark:border-blue-700"
+                            >
+                                <span
+                                    class="font-semibold text-blue-900 dark:text-blue-100"
+                                    >You actually pay:</span
+                                >
+                                <span
+                                    class="font-bold text-lg text-blue-900 dark:text-blue-100"
+                                    >$<span x-text="yourActualCost"></span
+                                ></span>
+                            </div>
+                        </div>
+
+                        <!-- Reverse Mode Results -->
+                        <div
+                            x-show="mode === 'reverse'"
+                            class="space-y-2 text-sm"
+                        >
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Total bill amount:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span
+                                        x-text="formatCurrency(billAmount)"
+                                    ></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Tip amount:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span x-text="requiredTipAmount"></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Bill + tip (total charge):</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span x-text="grandTotal"></span
+                                ></span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-700 dark:text-gray-300"
+                                    >Cash collected from friends:</span
+                                >
+                                <span
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >$<span
+                                        x-text="formatCurrency(cashCollected)"
+                                    ></span
+                                ></span>
+                            </div>
+
+                            <div
+                                class="flex justify-between pt-2 border-t border-blue-200 dark:border-blue-700"
+                            >
+                                <span
+                                    class="font-semibold text-blue-900 dark:text-blue-100"
+                                    >Resulting tip percentage:</span
+                                >
+                                <span
+                                    class="font-bold text-lg text-blue-900 dark:text-blue-100"
+                                    ><span x-text="requiredTipPercentage"></span
+                                    >%</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="text-xs text-gray-500 dark:text-gray-400 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded"
+                    >
+                        <div x-show="mode === 'normal'">
+                            <strong>Set the Tip:</strong> You charge the full
+                            bill + tip on your credit card, then collect cash
+                            from friends. This shows how much you actually pay
+                            out of pocket.
+                        </div>
+                        <div x-show="mode === 'reverse'">
+                            <strong>Set Your Amount:</strong> Enter how much you
+                            want to pay out of pocket, and get the tip
+                            percentage needed to achieve that goal. Perfect when
+                            you have a specific budget in mind.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Modal -->
+            <div
+                x-show="showAbout"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                @click.self="showAbout = false"
+                @keydown.escape.window="showAbout = false"
+                style="display: none"
+            >
+                <div
+                    x-transition:enter="transition ease-out duration-300 delay-100"
+                    x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl ring-1 ring-gray-900/10 dark:ring-gray-100/10 max-w-2xl w-full max-h-[85vh] overflow-hidden"
+                >
+                    <!-- Modal Header -->
+                    <div
+                        class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-6 py-4 border-b border-gray-200 dark:border-gray-600"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center"
+                                >
+                                    <svg
+                                        class="w-4 h-4 text-blue-600 dark:text-blue-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <h2
+                                    class="text-xl font-bold text-gray-900 dark:text-white"
+                                >
+                                    About "Be the Bank"
+                                </h2>
+                            </div>
+                            <button
+                                @click="showAbout = false"
+                                class="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all duration-200"
+                                aria-label="Close modal"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div
+                        class="px-6 py-6 max-h-[calc(85vh-5rem)] overflow-y-auto"
+                    >
+                        <div
+                            class="about-content [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-gray-900 [&_h1]:dark:text-white [&_h1]:mb-6 [&_h1]:border-b-2 [&_h1]:border-blue-200 [&_h1]:dark:border-blue-700 [&_h1]:pb-3 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-blue-900 [&_h2]:dark:text-blue-100 [&_h2]:mb-5 [&_h2]:mt-8 [&_h2]:border-b [&_h2]:border-blue-200 [&_h2]:dark:border-blue-800 [&_h2]:pb-2 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-blue-800 [&_h3]:dark:text-blue-200 [&_h3]:mb-4 [&_h3]:mt-6 [&_h4]:text-lg [&_h4]:font-medium [&_h4]:text-blue-700 [&_h4]:dark:text-blue-300 [&_h4]:mb-3 [&_h4]:mt-4 [&_p]:text-gray-700 [&_p]:dark:text-gray-300 [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-base [&_p:first-of-type]:text-lg [&_p:first-of-type]:font-medium [&_p:first-of-type]:text-gray-600 [&_p:first-of-type]:dark:text-gray-400 [&_strong]:font-semibold [&_strong]:text-gray-900 [&_strong]:dark:text-white [&_b]:font-semibold [&_b]:text-gray-900 [&_b]:dark:text-white [&_em]:italic [&_em]:text-blue-600 [&_em]:dark:text-blue-400 [&_em]:font-medium [&_i]:italic [&_i]:text-blue-600 [&_i]:dark:text-blue-400 [&_i]:font-medium [&_ul]:text-gray-700 [&_ul]:dark:text-gray-300 [&_ul]:mb-4 [&_ul]:ml-6 [&_ol]:text-gray-700 [&_ol]:dark:text-gray-300 [&_ol]:mb-4 [&_ol]:ml-6 [&_li]:mb-2 [&_a]:text-blue-600 [&_a]:dark:text-blue-400 [&_a]:no-underline [&_a:hover]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-blue-200 [&_blockquote]:dark:border-blue-700 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:dark:text-gray-400 [&_blockquote]:my-4 [&_code]:bg-gray-100 [&_code]:dark:bg-gray-700 [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono [&_code]:text-gray-800 [&_code]:dark:text-gray-200"
+                            x-html="aboutContent"
+                        >
+                            <div class="flex items-center justify-center py-12">
+                                <div class="text-center">
+                                    <div
+                                        class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"
+                                    ></div>
+                                    <p
+                                        class="text-gray-600 dark:text-gray-400 font-medium"
+                                    >
+                                        Loading content...
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function tipCalculator() {
-            return {
-                mode: 'normal',
-                billAmount: 0,
-                cashCollected: 0,
-                tipPercentage: 20,
-                desiredPayment: 0,
-                showAbout: false,
-                aboutContent: '',
-                
-                // Helper function to format currency
-                formatCurrency(value) {
-                    return (Number(value) || 0).toFixed(2);
-                },
-                
-                // Normal mode calculations
-                get tipAmount() {
-                    const bill = Number(this.billAmount) || 0;
-                    const tip = Number(this.tipPercentage) || 0;
-                    return (bill * (tip / 100)).toFixed(2);
-                },
-                
-                get totalWithTip() {
-                    const bill = Number(this.billAmount) || 0;
-                    const tip = Number(this.tipPercentage) || 0;
-                    return (bill * (1 + tip / 100)).toFixed(2);
-                },
-                
-                get yourActualCost() {
-                    const totalCharged = Number(this.totalWithTip) || 0;
-                    const cashReceived = Number(this.cashCollected) || 0;
-                    return Math.max(0, totalCharged - cashReceived).toFixed(2);
-                },
+        <script>
+            function tipCalculator() {
+                return {
+                    mode: "normal",
+                    billAmount: 0,
+                    cashCollected: 0,
+                    tipPercentage: 20,
+                    desiredPayment: 0,
+                    showAbout: false,
+                    aboutContent: "",
 
-                // Reverse mode calculations
-                get requiredTipPercentage() {
-                    const bill = Number(this.billAmount) || 0;
-                    const desired = Number(this.desiredPayment) || 0;
-                    const cash = Number(this.cashCollected) || 0;
-                    
-                    if (bill === 0) return '0.0';
-                    
-                    // Total charged = desired payment + cash collected
-                    const totalCharged = desired + cash;
-                    
-                    // Tip percentage = (totalCharged - bill) / bill * 100
-                    const tipPercentage = ((totalCharged - bill) / bill) * 100;
-                    
-                    return Math.max(0, tipPercentage).toFixed(1);
-                },
-                
-                get requiredTipAmount() {
-                    const bill = Number(this.billAmount) || 0;
-                    const tipPercent = Number(this.requiredTipPercentage) || 0;
-                    return (bill * (tipPercent / 100)).toFixed(2);
-                },
-                
-                get grandTotal() {
-                    const bill = Number(this.billAmount) || 0;
-                    const tipAmount = Number(this.requiredTipAmount) || 0;
-                    return (bill + tipAmount).toFixed(2);
-                },
+                    // Helper function to format currency
+                    formatCurrency(value) {
+                        return (Number(value) || 0).toFixed(2);
+                    },
 
-                async loadAbout() {
-                    if (this.aboutContent === '') {
-                        try {
-                            const response = await fetch('/about');
-                            this.aboutContent = await response.text();
-                        } catch (error) {
-                            this.aboutContent = '<p>Error loading about content.</p>';
+                    // Normal mode calculations
+                    get tipAmount() {
+                        const bill = Number(this.billAmount) || 0;
+                        const tip = Number(this.tipPercentage) || 0;
+                        return (bill * (tip / 100)).toFixed(2);
+                    },
+
+                    get totalWithTip() {
+                        const bill = Number(this.billAmount) || 0;
+                        const tip = Number(this.tipPercentage) || 0;
+                        return (bill * (1 + tip / 100)).toFixed(2);
+                    },
+
+                    get yourActualCost() {
+                        const totalCharged = Number(this.totalWithTip) || 0;
+                        const cashReceived = Number(this.cashCollected) || 0;
+                        return Math.max(0, totalCharged - cashReceived).toFixed(
+                            2
+                        );
+                    },
+
+                    // Reverse mode calculations
+                    get requiredTipPercentage() {
+                        const bill = Number(this.billAmount) || 0;
+                        const desired = Number(this.desiredPayment) || 0;
+                        const cash = Number(this.cashCollected) || 0;
+
+                        if (bill === 0) return "0.0";
+
+                        // Total charged = desired payment + cash collected
+                        const totalCharged = desired + cash;
+
+                        // Tip percentage = (totalCharged - bill) / bill * 100
+                        const tipPercentage =
+                            ((totalCharged - bill) / bill) * 100;
+
+                        return Math.max(0, tipPercentage).toFixed(1);
+                    },
+
+                    get requiredTipAmount() {
+                        const bill = Number(this.billAmount) || 0;
+                        const tipPercent =
+                            Number(this.requiredTipPercentage) || 0;
+                        return (bill * (tipPercent / 100)).toFixed(2);
+                    },
+
+                    get grandTotal() {
+                        const bill = Number(this.billAmount) || 0;
+                        const tipAmount = Number(this.requiredTipAmount) || 0;
+                        return (bill + tipAmount).toFixed(2);
+                    },
+
+                    async loadAbout() {
+                        if (this.aboutContent === "") {
+                            try {
+                                const response = await fetch("/about");
+                                this.aboutContent = await response.text();
+                            } catch (error) {
+                                this.aboutContent =
+                                    "<p>Error loading about content.</p>";
+                            }
                         }
-                    }
-                    this.showAbout = true;
-                }
+                        this.showAbout = true;
+                    },
+                };
             }
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>
