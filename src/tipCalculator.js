@@ -1,5 +1,5 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('tipCalculator', () => ({
+document.addEventListener("alpine:init", () => {
+    Alpine.data("tipCalculator", () => ({
         mode: "normal",
         billAmount: 0,
         cashCollected: 0,
