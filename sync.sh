@@ -9,6 +9,9 @@ npm run build-css-once
 # Copy src/index.html to public/index.html
 cp src/index.html public/index.html
 
+# Copy JavaScript file to public directory
+cp src/tipCalculator.js public/tipCalculator.js
+
 # Copy favicon.svg to public directory
 cp src/favicon.svg public/favicon.svg
 
