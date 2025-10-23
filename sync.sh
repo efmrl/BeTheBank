@@ -14,6 +14,7 @@ cp src/tipCalculator.js public/tipCalculator.js
 
 # Copy favicon.svg to public directory
 cp src/favicon.svg public/favicon.svg
+cp src/apple-touch-icon.png public/apple-touch-icon.png
 
 # Convert src/about.md to public/about/index.html using pandoc
 mkdir -p public/about
