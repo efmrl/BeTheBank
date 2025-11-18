@@ -5,7 +5,7 @@ with cash.
 
 But sometimes, you're out of cash. Never fear, you can collect
 everyone else's cash, and pay the whole bill with credit card.  You
-can *be the bank*.
+can be the bank.
 
 Now you've paid your part, and you have cash left over for next
 time.
